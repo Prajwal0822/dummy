@@ -1,0 +1,31 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+    <div class="list-group">
+        <a routerLink="/workspace" [routerLinkActive]="['router-link-active']" class="list-group-item" *ngxPermissionsOnly="['Workspace']">
+            <i class="fa fa-fw fa-dashboard"></i>&nbsp;{{ 'Workspace' | translate }}
+        </a>
+        <div class="nested-menu" *ngxPermissionsOnly="['MockData']">
+            <a class="list-group-item" (click)="addExpandClass('pages')">
+                <span><i class="fa fa-edit"></i>&nbsp; {{ 'Mock' | translate }}</span>
+            </a>
+            <li class="nested" [class.expand]="showMenu === 'pages'">
+                <ul class="submenu">
+                    <li>
+                        <a [routerLink]="['/httpMock']" [routerLinkActive]="['router-link-active']" class="list-group-item" >&nbsp;&nbsp;{{ 'HTTP Mock' | translate }}</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/sshTelnetMock']" [routerLinkActive]="['router-link-active']" class="list-group-item" >&nbsp;&nbsp;{{ 'SSH-Telnet Mock' | translate }}</a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/databaseMock']" [routerLinkActive]="['router-link-active']" class="list-group-item" >&nbsp;&nbsp;{{ 'DB Mock' | translate }}</a>
+                    </li>
+                </ul>
+            </li>
+        </div>
+        <a [routerLink]="['/testCases']" [routerLinkActive]="['router-link-active']" class="list-group-item" *ngxPermissionsOnly="['TestCases']">
+            <i class="fa fa-fw fa-desktop"></i>&nbsp;{{ 'Test Cases' | translate }}
+        </a>
+        <a [routerLink]="['/settings']" [routerLinkActive]="['router-link-active']" class="list-group-item" *ngxPermissionsOnly="['Settings']">
+            <i class="fa fa-fw fa-wrench"></i>&nbsp;{{ 'Settings' | translate }}
+        </a>
+    </div>
+</nav>

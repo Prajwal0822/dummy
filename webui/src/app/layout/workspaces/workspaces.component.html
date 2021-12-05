@@ -1,0 +1,77 @@
+<div>
+	<p-growl [(value)]="msgs"  [style]="{'top':'90px'}"></p-growl>
+    <app-page-header [heading]="'Workspace'" [icon]="'fa-table'"></app-page-header>
+
+	<p-table [value]="workspaces" selectionMode="single" [(selection)]="selectedWorkspace" [style]="{width: '560px'}"
+			 (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+		<ng-template pTemplate="header">
+			<tr>
+				<th>{{ 'Work Group' | translate }}</th>
+				<th>{{ 'Name' | translate }}</th>
+				<th>{{ 'Create Date' | translate }}</th>
+			</tr>
+		</ng-template>
+		<ng-template pTemplate="body" let-rowData>
+			<tr [pSelectableRow]="rowData">
+				<td>{{rowData.workGroup}}</td>
+				<td>{{rowData.name}}</td>
+				<td>{{rowData.createDate}}</td>
+			</tr>
+		</ng-template>
+
+		<ng-template pTemplate="summary" let-rowData>
+			<div style="text-align:left">
+				<button type="button" pButton icon="fa fa-plus" (click)="showDialogToAdd()" label="{{'Add' | translate }}"></button>
+			</div>
+		</ng-template>
+	</p-table>
+
+	<p-dialog header="{{'Workspace Details' | translate }}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="600">
+		<div class="ui-g ui-fluid" *ngIf="displayDialog" [formGroup]="workspaceForm">
+			<div class="ui-g-12">
+				<div class="ui-g-3">
+					<label for="workGroup">{{ 'Work Group' | translate }}</label>
+				</div>
+				<div class="ui-g-5">
+					<p-dropdown [options]="workGroups" id="workGroup" formControlName="workGroup" [(ngModel)]="workspace.workGroup"
+								[editable]="true" placeholder="Select a work group" [style]="{'width':'200px'}"></p-dropdown>
+				</div>
+				<div class="ui-g-4">
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="!workspaceForm.controls['workGroup'].valid && workspaceForm.controls['workGroup'].dirty">
+						<i class="fa fa-close"></i>
+						{{ 'Required' | translate }}
+					</div>
+				</div>
+			</div>
+			<div class="ui-g-12">
+				<div class="ui-g-3">
+					<label for="workspaceName">{{ 'Name' | translate }}</label>
+				</div>
+				<div class="ui-g-5">
+					<input pInputText id="workspaceName" formControlName="workspaceName"  [(ngModel)]="workspace.name" />
+				</div>
+				<div class="ui-g-4">
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="!workspaceForm.controls['workspaceName'].valid && workspaceForm.controls['workspaceName'].dirty">
+						<i class="fa fa-close"></i>
+						{{ 'Required' | translate }}
+					</div>
+				</div>
+			</div>
+			<div class="ui-g-12">
+				<div class="ui-g-3">
+					<label for="url">Url</label><span style="color: red; margin-left: 5px" *ngIf="!workspaceForm.controls['workspaceUrl'].valid && workspaceForm.controls['workspaceUrl'].dirty">{{ 'Error' | translate }}</span>
+				</div>
+				<div class="ui-g-9">
+					<input pInputText id="url" formControlName="workspaceUrl"  [(ngModel)]="workspace.url" size="40"/>
+				</div>
+			</div>
+		</div>
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="fa fa-close" (click)="delete()" *ngIf="!newWorkspace" label="{{'Delete' | translate }}"></button>
+				<button type="button" pButton icon="fa fa-check" (click)="save()" label="{{'Save' | translate }}" [disabled]="!workspaceForm.valid"></button>
+			</div>
+		</p-footer>
+	</p-dialog>
+
+</div>
